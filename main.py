@@ -35,6 +35,7 @@ async def predict(file: UploadFile = File(...)):
 
     
     result = predict_image(model, image)
+     return result
 
 import uvicorn
 import os
@@ -45,5 +46,3 @@ if __name__ == "__main__":
 
     
     
-
-    return result
