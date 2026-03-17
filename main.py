@@ -36,7 +36,24 @@ async def predict(file: UploadFile = File(...)):
     
     result = predict_image(model, image)
     return result
+from fastapi import Body
 
+@app.post("/predict-text")
+async def predict_text(data: dict = Body(...)):
+    text = data.get("text", "")
+
+    word_count = len(text.split())
+
+    if word_count > 80:
+        return {
+            "prediction": "AI-generated",
+            "confidence": 75
+        }
+    else:
+        return {
+            "prediction": "Human-written",
+            "confidence": 65
+        }
 import uvicorn
 import os
 if __name__ == "__main__":
