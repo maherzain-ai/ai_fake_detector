@@ -1,4 +1,4 @@
-
+from transformers import pipeline
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
@@ -23,7 +23,9 @@ app.add_middleware(
 
 # Load model once at startup
 model = load_model()
-
+text_model=
+pipeline("text-classification",
+model="roberta-base-openai-detector")
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     # Open uploaded image
@@ -42,17 +44,12 @@ from fastapi import Body
 async def predict_text(data: dict = Body(...)):
     text = data.get("text", "")
 
-    word_count = len(text.split())
+    result = text_model(text)[0]
 
-    if word_count > 80:
-        return {
-            "prediction": "AI-generated",
-            "confidence": 75
-        }
-    else:
-        return {
-            "prediction": "Human-written",
-            "confidence": 65
+    return {
+        "prediction": result["label"],
+        "confidence": float(result["score"]) * 100
+    }
         }
 import uvicorn
 import os
