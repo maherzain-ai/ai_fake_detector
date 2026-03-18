@@ -50,7 +50,7 @@ async def predict_text(data: dict = Body(...)):
         "prediction": result["label"],
         "confidence": float(result["score"]) * 100
     }
-        }
+    
 import uvicorn
 import os
 if __name__ == "__main__":
