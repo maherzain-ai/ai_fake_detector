@@ -4,4 +4,3 @@ python-multipart
 pillow
 torch==2.9.0
 torchvision
-opencv-python-headless
