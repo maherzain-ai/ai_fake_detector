@@ -1,12 +1,8 @@
-from transformers import pipeline
+
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 from model_loader import load_model, predict_image
-text_detector=pipeline(
-    "text-classification",
-    model="roberta-base-openai-detector"
-)
 app = FastAPI()
 
 # Allow requests from your frontend
@@ -35,19 +31,22 @@ async def predict(file: UploadFile = File(...)):
     
     result = predict_image(model, image)
     return result
-from fastapi import Request
+import requests
+from fastapi import Body
+
+API_URL = "https://api-inference.huggingface.co/models/roberta-base-openai-detector"
 
 @app.post("/detect-text")
-async def detect_text(request: Request):
+async def detect_text(data: dict = Body(...)):
 
-    data = await request.json()
     text = data["text"]
 
-    result = text_detector(text)[0]
+    response = requests.post(API_URL, json={"inputs": text})
+    result = response.json()[0]
 
     return {
-        "label": result["label"],
-        "score": result["score"]
+        "prediction": result["label"],
+        "confidence": result["score"] * 100
     }
 import uvicorn
 import os
