@@ -4,3 +4,5 @@ python-multipart
 pillow
 torch==2.9.0
 torchvision
+transformers
+torch
