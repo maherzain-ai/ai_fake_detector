@@ -39,14 +39,14 @@ API_URL = "https://api-inference.huggingface.co/models/roberta-base-openai-detec
 @app.post("/detect-text")
 async def detect_text(data: dict = Body(...)):
 
-    text = data["text"]
+    text = data.get["text",""]
 
     response = requests.post(API_URL, json={"inputs": text})
-    result = response.json()[0]
+    result = response.json()
 
     return {
-        "prediction": result["label"],
-        "confidence": result["score"] * 100
+        "prediction": result[0]["label"],
+        "confidence": result[0]["score"] * 100
     }
 import uvicorn
 import os
