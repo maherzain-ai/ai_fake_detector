@@ -31,56 +31,7 @@ async def predict(file: UploadFile = File(...)):
     
     result = predict_image(model, image)
     return result
-import requests
-from fastapi import Body
-
-API_URL = "https://api-inference.huggingface.co/models/roberta-base-openai-detector"
-
-headers = {
-    "Authorization": "Bearer import requests
-from fastapi import Body
-
-API_URL = "https://api-inference.huggingface.co/models/roberta-base-openai-detector"
-
-headers = {
-    "Authorization": "Bearer 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"
-}
-
-@app.post("/detect-text")
-async def detect_text(data: dict = Body(...)):
-
-    text = data["text"]
-
-    response = requests.post(
-        API_URL,
-        headers=headers,
-        json={"inputs": text}
-    )
-
-    result = response.json()[0]
-
-    return {
-        "prediction": result["label"],
-        "confidence": result["score"] * 10"
-}
-
-@app.post("/detect-text")
-async def detect_text(data: dict = Body(...)):
-
-    text = data["text"]
-
-    response = requests.post(
-        API_URL,
-        headers=headers,
-        json={"inputs": text}
-    )
-
-    result = response.json()[0]
-
-    return {
-        "prediction": result["label"],
-        "confidence": result["score"] * 100
-    }
+ 
 import uvicorn
 import os
 if __name__ == "__main__":
