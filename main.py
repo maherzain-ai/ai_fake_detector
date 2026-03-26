@@ -1,4 +1,5 @@
-
+from openai import OpenAI
+client=OpenAI(api_key="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")
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
@@ -31,7 +32,29 @@ async def predict(file: UploadFile = File(...)):
     
     result = predict_image(model, image)
     return result
- 
+ @app.post("/detect-text")
+async def detect_text(request: Request):
+
+    data = await request.json()
+    text = data["text"]
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system",
+                "content": "Detect whether the text is AI generated or human written. Reply only: Likely AI or Likely Human."
+            },
+            {
+                "role": "user",
+                "content": text
+            }
+        ]
+    )
+
+    result = response.choices[0].message.content
+
+    return {"result": result}
 import uvicorn
 import os
 if __name__ == "__main__":
