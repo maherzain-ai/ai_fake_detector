@@ -32,7 +32,7 @@ async def predict(file: UploadFile = File(...)):
     
     result = predict_image(model, image)
     return result
- @app.post("/detect-text")
+@app.post("/detect-text")
 async def detect_text(request: Request):
 
     data = await request.json()
